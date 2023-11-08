@@ -1,11 +1,16 @@
-﻿using System;
+using System;
 using System.IO;
 
 namespace ConsoleBlackJack {
     class ConsoleBlackJack {
         public static string[] playersHand = new string[13];
+        public static int numPlayerTurns = 0;
+
         public static string[] dealersHand = new string[13];
+        public static int numDealerTurns = 0;
+
         public static int cash;
+        public static bool turn = false; //false for player  true for dealer
 
         public static int[] drawnCards = new int[14]; // 0 Ace 11 Jack 12 Queen 13 King
 
@@ -32,6 +37,14 @@ namespace ConsoleBlackJack {
                         Console.WriteLine(e.Message);
                         return "null";
                     }
+            }
+        }
+
+        static void game() {
+            if (turn) {
+                playersHand[numPlayerTurns] = RandomCardDraw();
+                numPlayerTurns++;
+                Console.WriteLine("What would you like to do?");
             }
         }
 
