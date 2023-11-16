@@ -91,12 +91,12 @@ namespace ConsoleBlackJack {
         
         static void game() {
             if (turn) {
-                Console.Clear();
+                try {Console.Clear();} catch{}
                 Console.Write("Your current cards: ");
                 writeArray(playersHand, numPlayerTurns);
                 Console.Write("   The value of your hand is: " + Convert.ToString(playerVal) + "\n");
                 Console.WriteLine();
-                Console.Write("The dealers hand: " + dealersHand[0]);
+                Console.Write("The dealers hand: " + dealersHand[0] + ", ");
                 for (int i = 1; i < numDealerTurns; i++) {
                     Console.Write("*");
                     if (i == numDealerTurns-1) {
@@ -124,6 +124,7 @@ namespace ConsoleBlackJack {
                             } else {
                                 Console.WriteLine();
                                 Console.WriteLine("You drew a " + playersHand[numPlayerTurns - 1] + " which set you over the value of 21. You lose");
+                                Console.WriteLine("Value of your hand: " + playerVal);
                             }
                         } else {
                             turn = false;
@@ -133,8 +134,13 @@ namespace ConsoleBlackJack {
                         Console.WriteLine();
                         Console.WriteLine("You have decided to stand.");
                         Thread.Sleep(2000);
-                        turn = false;
-                        game();
+                        if (dealerStanding) {
+                            Console.WriteLine("The dealer is also standing.");
+                            Thread.Sleep(1000);
+                            try {Console.Clear();} catch{Console.Write("\n\n\n");}
+                            Console.WriteLine("The dealers hand: ");
+                            writeArray(dealersHand, numDealerTurns);
+                        }
                     }
                 } else {
                     Console.WriteLine("You cannot input a null value, try again.");
@@ -184,9 +190,11 @@ namespace ConsoleBlackJack {
                                 break;
                         }
 
-                        if (willHit) {
+                        if (willHit && !dealerStanding) {
                             dealersHand[numDealerTurns] = RandomCardDraw(false);
                             numDealerTurns++;
+                        } else {
+                            dealerStanding = true;
                         }
                     }
 
@@ -226,5 +234,4 @@ namespace ConsoleBlackJack {
     }
 }
 
-/* TODO: If both players stand, end game. Try catch for line 94 to let the code run if it is in vsCode debug
-Add a betting system using the save.dat file*/
+/* TODO: If both players stand, end game. Try catch for line 94 to let the code run if it is in vsCode debug*/
