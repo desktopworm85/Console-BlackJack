@@ -154,7 +154,7 @@ namespace ConsoleBlackJack {
                         numDealerTurns++;
                     }
 
-                    if (dealerVal >= 17) {
+                    if (dealerVal >= 17 && dealerVal <= 21) {
                         Random rand = new Random();
                         int randProb = rand.Next(101);
                         bool willHit = false;
